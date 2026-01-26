@@ -2,7 +2,7 @@
 
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
-import { Star, GripVertical } from "lucide-react";
+import { Star } from "lucide-react";
 import type { Chore } from "@/types";
 
 interface ChoreCardProps {
@@ -59,11 +59,6 @@ export function ChoreCard({
       {...attributes}
       {...listeners}
     >
-      {/* Drag handle indicator */}
-      <div className="chore-card-grip">
-        <GripVertical size={12} />
-      </div>
-
       {/* Icon */}
       <div className="chore-card-icon">
         {chore.iconType === "emoji" ? (

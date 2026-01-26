@@ -406,6 +406,7 @@ body {
   gap: 0.75rem;
   overflow-x: auto;
   padding-bottom: 0.5rem;
+  min-height: 120px;
 }
 
 /* =============================================================================
@@ -426,6 +427,7 @@ body {
   cursor: grab;
   transition: all var(--transition-fast);
   flex-shrink: 0;
+  margin-top: 10px;
 }
 
 .chore-card:hover {
