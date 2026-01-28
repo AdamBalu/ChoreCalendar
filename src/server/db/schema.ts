@@ -25,6 +25,9 @@ export const users = createTable("user", {
   emailVerified: timestamp("email_verified", { mode: "date" }),
   image: text("image"),
   targetScore: integer("target_score").notNull().default(10),
+  isPremium: boolean("is_premium").notNull().default(false),
+  stripeCustomerId: text("stripe_customer_id"),
+  stripeSubscriptionId: text("stripe_subscription_id"),
 });
 
 export const accounts = createTable(

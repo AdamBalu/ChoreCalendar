@@ -11,7 +11,15 @@ interface EmojiPickerProps {
 
 export function EmojiPicker({ onSelect, selectedEmoji }: EmojiPickerProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -33,7 +41,10 @@ export function EmojiPicker({ onSelect, selectedEmoji }: EmojiPickerProps) {
   }, [isOpen]);
 
   return (
-    <div ref={containerRef} className="emoji-picker-container">
+    <div
+      ref={containerRef}
+      className={`emoji-picker-container ${isOpen ? "open" : ""}`}
+    >
       <button
         type="button"
         className="emoji-picker-trigger"
@@ -63,8 +74,8 @@ export function EmojiPicker({ onSelect, selectedEmoji }: EmojiPickerProps) {
             }}
             lazyLoadEmojis
             searchPlaceholder="Search emoji..."
-            width={320}
-            height={400}
+            width={isMobile ? 280 : 320}
+            height={isMobile ? 350 : 400}
           />
         </div>
       )}

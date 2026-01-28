@@ -1,3 +1,8 @@
+---
+description: 
+alwaysApply: true
+---
+
 # Chore Calendar - Project Rules
 
 ## Overview
