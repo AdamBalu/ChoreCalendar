@@ -1,29 +1,116 @@
-# Create T3 App
+# Chore Calendar
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+A beautiful, modern calendar app for tracking daily chores and activities with drag-and-drop functionality.
 
-## What's next? How do I make an app with this?
+![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)
+![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?style=flat-square&logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-38B2AC?style=flat-square&logo=tailwind-css)
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## ✨ Features
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+- **🎯 Daily Goals** — Set a daily score target and track your progress
+- **🖱️ Drag & Drop** — Easily drag chores onto calendar days
+- **⭐ Favorites** — Mark chores as favorites to reuse them
+- **📱 Responsive** — Works great on desktop and mobile
+- **🔐 Authentication** — Sign in with Google or GitHub to save progress
+- **☁️ Cloud Sync** — Your data is saved to the cloud when logged in
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+## 🛠️ Tech Stack
 
-## Learn More
+| Layer       | Technology                                                                     |
+| ----------- | ------------------------------------------------------------------------------ |
+| Framework   | [Next.js 15](https://nextjs.org) with App Router                               |
+| Language    | [TypeScript](https://typescriptlang.org)                                       |
+| Styling     | [Tailwind CSS 4](https://tailwindcss.com)                                      |
+| Database    | [Neon PostgreSQL](https://neon.tech) + [Drizzle ORM](https://orm.drizzle.team) |
+| Auth        | [Auth.js v5](https://authjs.dev) (Google, GitHub)                              |
+| Drag & Drop | [@dnd-kit](https://dndkit.com)                                                 |
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+## 🚀 Getting Started
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+### Prerequisites
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+- Node.js 18+
+- npm or pnpm
+- A [Neon](https://neon.tech) database (free tier available)
+- OAuth credentials from Google and/or GitHub
 
-## How do I deploy this?
+### Installation
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+```bash
+# Clone the repo
+git clone https://github.com/your-username/chore-calendar.git
+cd chore-calendar
+
+# Install dependencies
+npm install
+
+# Copy environment variables
+cp .env.example .env
+```
+
+### Configuration
+
+Edit `.env` with your credentials:
+
+```env
+DATABASE_URL="postgresql://..."
+AUTH_SECRET="generate-with-openssl-rand-base64-32"
+AUTH_GOOGLE_ID="your-google-client-id"
+AUTH_GOOGLE_SECRET="your-google-client-secret"
+AUTH_GITHUB_ID="your-github-client-id"
+AUTH_GITHUB_SECRET="your-github-client-secret"
+```
+
+### Database Setup
+
+```bash
+# Push the schema to your database
+npm run db:push
+```
+
+### Development
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to see the app.
+
+## 📁 Project Structure
+
+```
+src/
+├── app/                 # Next.js App Router pages & API routes
+│   ├── api/
+│   │   ├── auth/        # Auth.js endpoints
+│   │   ├── calendar/    # Calendar CRUD
+│   │   ├── chores/      # Chores CRUD
+│   │   └── settings/    # User settings
+│   └── page.tsx         # Main app page
+├── components/          # React components
+├── context/             # React context (ChoreProvider)
+├── hooks/               # Custom React hooks
+├── lib/                 # Utilities & API client
+├── server/              # Server-side code
+│   ├── auth.ts          # Auth.js config
+│   └── db/              # Drizzle schema & connection
+├── styles/              # Global CSS
+└── types.ts             # TypeScript types
+```
+
+## 📜 Scripts
+
+| Script              | Description                 |
+| ------------------- | --------------------------- |
+| `npm run dev`       | Start development server    |
+| `npm run build`     | Build for production        |
+| `npm run start`     | Start production server     |
+| `npm run check`     | Run linting + type checking |
+| `npm run db:push`   | Push schema to database     |
+| `npm run db:studio` | Open Drizzle Studio         |
+
+## 📄 License
+
+MIT

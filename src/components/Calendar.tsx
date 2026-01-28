@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ChevronLeft, ChevronRight, Settings } from "lucide-react";
 import { DayCell } from "./DayCell";
 import { useChores } from "@/context/ChoreContext";
+import { ClickAwayListener } from "./ClickAwayListener";
 
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const MONTHS = [
@@ -90,31 +91,33 @@ export function Calendar() {
           </button>
         </div>
 
-        <div className="calendar-settings">
-          <button
-            className="calendar-settings-btn"
-            onClick={() => setShowSettings(!showSettings)}
-          >
-            <Settings size={18} />
-            <span>Daily Goal: {targetScore}</span>
-          </button>
+        <ClickAwayListener onClickAway={() => setShowSettings(false)}>
+          <div className="calendar-settings">
+            <button
+              className="calendar-settings-btn"
+              onClick={() => setShowSettings(!showSettings)}
+            >
+              <Settings size={18} />
+              <span>Daily Goal: {targetScore}</span>
+            </button>
 
-          {showSettings && (
-            <div className="calendar-settings-dropdown">
-              <label>Daily Score Target</label>
-              <input
-                type="range"
-                min={1}
-                max={50}
-                value={targetScore}
-                onChange={(e) => setTargetScore(Number(e.target.value))}
-              />
-              <span className="calendar-settings-value">
-                {targetScore} points
-              </span>
-            </div>
-          )}
-        </div>
+            {showSettings && (
+              <div className="calendar-settings-dropdown">
+                <label>Daily Score Target</label>
+                <input
+                  type="range"
+                  min={1}
+                  max={50}
+                  value={targetScore}
+                  onChange={(e) => setTargetScore(Number(e.target.value))}
+                />
+                <span className="calendar-settings-value">
+                  {targetScore} points
+                </span>
+              </div>
+            )}
+          </div>
+        </ClickAwayListener>
       </div>
 
       <div className="calendar-weekdays">

@@ -2,7 +2,7 @@
 
 import { useChores } from "@/context/ChoreContext";
 import { ChoreCard } from "./ChoreCard";
-import { Sparkles } from "lucide-react";
+import { CalendarPlus } from "lucide-react";
 
 export function ChorePool() {
   const { chores, toggleFavorite } = useChores();
@@ -11,7 +11,7 @@ export function ChorePool() {
     return (
       <div className="chore-pool empty">
         <div className="chore-pool-empty">
-          <Sparkles size={24} className="text-amber-500/50" />
+          <CalendarPlus size={24} className="text-amber-500/50" />
           <p>Create your first chore above, then drag it to the calendar!</p>
         </div>
       </div>

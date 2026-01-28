@@ -14,6 +14,7 @@ import { ChoreProvider, useChores } from "@/context/ChoreContext";
 import { ChoreCreator } from "@/components/ChoreCreator";
 import { ChorePool } from "@/components/ChorePool";
 import { Calendar } from "@/components/Calendar";
+import { AuthButton } from "@/components/AuthButton";
 import type { Chore } from "@/types";
 
 function ChoreCalendarApp() {
@@ -46,7 +47,7 @@ function ChoreCalendarApp() {
 
       // Only place if dropping on a valid date cell
       if (/^\d{4}-\d{2}-\d{2}$/.exec(date)) {
-        placeChoreOnCalendar(choreId, date);
+        void placeChoreOnCalendar(choreId, date);
       }
     }
   };
@@ -64,8 +65,15 @@ function ChoreCalendarApp() {
     >
       <div className="app-container">
         <header className="app-header">
-          <h1>Chore Calendar</h1>
-          <p>Create chores, drag them to days, and track your daily progress</p>
+          <div className="flex-1">
+            <div className="app-title-container">
+              <h1>Chore Calendar</h1>
+              <p className="app-description">
+                Create chores, drag them to days, and track your daily progress!
+              </p>
+            </div>
+          </div>
+          <AuthButton />
         </header>
 
         <ChoreCreator />
