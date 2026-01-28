@@ -107,10 +107,6 @@ body {
 .landing-bg-gradient {
   position: fixed;
   inset: 0;
-  background: 
-    radial-gradient(ellipse at 20% 20%, rgba(245, 158, 11, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 80%, rgba(20, 184, 166, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, rgba(244, 63, 94, 0.04) 0%, transparent 60%);
   pointer-events: none;
   z-index: 0;
 }
@@ -316,9 +312,6 @@ body {
 .signin-bg-gradient {
   position: absolute;
   inset: 0;
-  background: 
-    radial-gradient(ellipse at 30% 30%, rgba(245, 158, 11, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 70% 70%, rgba(20, 184, 166, 0.05) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
