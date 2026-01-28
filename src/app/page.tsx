@@ -66,10 +66,12 @@ function ChoreCalendarApp() {
       <div className="app-container">
         <header className="app-header">
           <div className="flex-1">
-            <h1>Chore Calendar</h1>
-            <p>
-              Create chores, drag them to days, and track your daily progress
-            </p>
+            <div className="app-title-container">
+              <h1>Chore Calendar</h1>
+              <p className="app-description">
+                Create chores, drag them to days, and track your daily progress!
+              </p>
+            </div>
           </div>
           <AuthButton />
         </header>

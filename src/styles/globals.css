@@ -90,7 +90,8 @@ body {
 .app-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1.5rem;
+  padding-bottom: 1rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -100,13 +101,12 @@ body {
 .app-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 0.5rem;
-  gap: 1rem;
+  align-items: center;
 }
 
-.app-header > div:first-child {
-  flex: 1;
+.app-title-container {
+  position: relative;
+  display: inline-block;
 }
 
 .app-header h1 {
@@ -120,12 +120,45 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  padding-bottom: 0;
+  cursor: cell;
 }
 
-.app-header p {
-  color: var(--text-muted);
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
+.app-description {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 0;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  z-index: 100;
+  box-shadow: var(--shadow-lg);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-8px) scale(0.95);
+  transition: all var(--transition-default);
+}
+
+.app-description::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 24px;
+  width: 10px;
+  height: 10px;
+  background: var(--bg-elevated);
+  border-left: 1px solid var(--border-default);
+  border-top: 1px solid var(--border-default);
+  transform: rotate(45deg);
+}
+
+.app-title-container:hover .app-description {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 /* =============================================================================
@@ -707,7 +740,6 @@ body {
   box-shadow: var(--shadow-lg);
   animation: dropdownFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
-
 
 @media (min-width: 768px) {
   .calendar-settings-dropdown {

@@ -22,7 +22,6 @@ export function AuthButton() {
     return (
       <ClickAwayListener onClickAway={() => setIsOpen(false)}>
         <div className="calendar-settings">
-          {/* User button - matching calendar-settings-btn style */}
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="calendar-settings-btn"
@@ -44,7 +43,6 @@ export function AuthButton() {
             />
           </button>
 
-          {/* Dropdown menu - matching calendar-settings-dropdown style */}
           {isOpen && (
             <div className="calendar-settings-dropdown">
               <div className="mb-2 border-b border-white/10 px-2 pb-4">
