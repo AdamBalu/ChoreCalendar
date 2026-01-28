@@ -1,12 +1,16 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Plus, Minus, Upload, CalendarPlus } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Plus, Minus, Upload, CalendarPlus, Lock } from "lucide-react";
 import { EmojiPicker } from "./EmojiPicker";
 import { useChores } from "@/context/ChoreContext";
+import { usePremiumStatus } from "@/hooks/usePremiumStatus";
 
 export function ChoreCreator() {
+  const router = useRouter();
   const { createChore } = useChores();
+  const { isPremium, isLoading: isPremiumLoading } = usePremiumStatus();
   const [name, setName] = useState("");
   const [icon, setIcon] = useState("");
   const [iconType, setIconType] = useState<"emoji" | "image">("emoji");
@@ -23,6 +27,14 @@ export function ChoreCreator() {
         setIconType("image");
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleUploadClick = () => {
+    if (isPremium) {
+      fileInputRef.current?.click();
+    } else {
+      router.push("/pricing");
     }
   };
 
@@ -61,8 +73,13 @@ export function ChoreCreator() {
 
           <button
             type="button"
-            className="chore-creator-upload"
-            onClick={() => fileInputRef.current?.click()}
+            className={`chore-creator-upload ${!isPremium && !isPremiumLoading ? "locked" : ""}`}
+            onClick={handleUploadClick}
+            title={
+              isPremium
+                ? "Upload custom image"
+                : "Premium feature - click to upgrade"
+            }
           >
             {iconType === "image" && icon ? (
               <img
@@ -70,6 +87,8 @@ export function ChoreCreator() {
                 alt="Uploaded"
                 className="h-6 w-6 rounded object-contain"
               />
+            ) : !isPremium && !isPremiumLoading ? (
+              <Lock size={20} />
             ) : (
               <Upload size={20} />
             )}

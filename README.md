@@ -76,7 +76,7 @@ npm run db:push
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see the app.
+Open [the application](http://localhost:3000) (or your deployment URL) to see the app.
 
 ## 📁 Project Structure
 
