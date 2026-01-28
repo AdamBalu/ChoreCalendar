@@ -2,10 +2,18 @@
 
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Minus, Upload, CalendarPlus, Lock } from "lucide-react";
+import {
+  Plus,
+  Minus,
+  Upload,
+  CalendarPlus,
+  Lock,
+  AlertCircle,
+} from "lucide-react";
 import { EmojiPicker } from "./EmojiPicker";
 import { useChores } from "@/context/ChoreContext";
 import { usePremiumStatus } from "@/hooks/usePremiumStatus";
+import { compressImage } from "@/lib/image";
 
 export function ChoreCreator() {
   const router = useRouter();
@@ -16,18 +24,36 @@ export function ChoreCreator() {
   const [iconType, setIconType] = useState<"emoji" | "image">("emoji");
   const [score, setScore] = useState(1);
   const [isCreating, setIsCreating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setIcon(event.target?.result as string);
-        setIconType("image");
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    setError(null);
+
+    // Initial size check (5MB) before processing
+    if (file.size > 2 * 1024 * 1024) {
+      setError("Image is too large (max 2MB)");
+      return;
     }
+
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      try {
+        const rawDataUrl = event.target?.result as string;
+        // Compress the image before setting it
+        const compressedDataUrl = await compressImage(rawDataUrl);
+        setIcon(compressedDataUrl);
+        setIconType("image");
+      } catch (err) {
+        console.error("Image processing error:", err);
+        setError("Failed to process image");
+      }
+    };
+    reader.onerror = () => setError("Failed to read file");
+    reader.readAsDataURL(file);
   };
 
   const handleUploadClick = () => {
@@ -144,6 +170,14 @@ export function ChoreCreator() {
           <span>Create</span>
         </button>
       </div>
+
+      {/* Error Message */}
+      {error && (
+        <div className="chore-creator-error">
+          <AlertCircle size={14} />
+          <span>{error}</span>
+        </div>
+      )}
     </div>
   );
 }

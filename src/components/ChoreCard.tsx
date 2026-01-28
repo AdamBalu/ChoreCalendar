@@ -2,7 +2,7 @@
 
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
-import { Star } from "lucide-react";
+import { Pin } from "lucide-react";
 import type { Chore } from "@/types";
 
 interface ChoreCardProps {
@@ -85,7 +85,7 @@ export function ChoreCard({
           }}
           onPointerDown={(e) => e.stopPropagation()}
         >
-          <Star size={14} fill={chore.isFavorite ? "currentColor" : "none"} />
+          <Pin size={14} fill={chore.isFavorite ? "currentColor" : "none"} />
         </button>
       )}
 
