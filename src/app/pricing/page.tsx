@@ -10,7 +10,7 @@ import { usePremiumStatus } from "@/hooks/usePremiumStatus";
 export default function PricingPage() {
   const { data: session } = useSession();
   const router = useRouter();
-  const { isPremium, isLoading } = usePremiumStatus();
+  const { isPremium, isAdmin, isLoading } = usePremiumStatus();
   const [isProcessing, setIsProcessing] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
 
@@ -170,8 +170,8 @@ export default function PricingPage() {
         </div>
       )}
 
-      {/* Cancel subscription link for premium users */}
-      {isPremium && !isLoading && (
+      {/* Cancel subscription link for premium users (not for admins who get it for free) */}
+      {isPremium && !isAdmin && !isLoading && (
         <button
           onClick={handleManageSubscription}
           disabled={isCancelling}

@@ -21,17 +21,24 @@ export async function POST(request: NextRequest) {
     }
 
     // Get user's Stripe customer ID
-    const user = await db
+    const userRecord = await db
       .select({ stripeCustomerId: users.stripeCustomerId })
       .from(users)
       .where(eq(users.id, session.user.id))
       .limit(1);
 
-    const customerId = user[0]?.stripeCustomerId;
+    if (!userRecord[0]) {
+      return NextResponse.json(
+        { error: "User not found in database" },
+        { status: 404 }
+      );
+    }
+
+    const customerId = userRecord[0].stripeCustomerId;
 
     if (!customerId) {
       return NextResponse.json(
-        { error: "No subscription found" },
+        { error: "No active Stripe subscription found for this account" },
         { status: 400 }
       );
     }
