@@ -39,7 +39,7 @@ export default function PricingPage() {
 
   return (
     <div className="pricing-page">
-      <button className="pricing-back-btn" onClick={() => router.back()}>
+      <button className="pricing-back-btn" onClick={() => router.push("/")}>
         <ArrowLeft size={18} />
         <span>Back</span>
       </button>

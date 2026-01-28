@@ -2,13 +2,16 @@
 
 import { useState } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { LogIn, LogOut, ChevronDown } from "lucide-react";
+import { LogIn, LogOut, ChevronDown, Star } from "lucide-react";
 import { ClickAwayListener } from "./ClickAwayListener";
 import Image from "next/image";
+import Link from "next/link";
+import { usePremiumStatus } from "@/hooks/usePremiumStatus";
 
 export function AuthButton() {
   const { data: session, status } = useSession();
   const [isOpen, setIsOpen] = useState(false);
+  const { isPremium } = usePremiumStatus();
 
   if (status === "loading") {
     return (
@@ -53,6 +56,18 @@ export function AuthButton() {
                   {session.user.email}
                 </p>
               </div>
+
+              {isPremium && (
+                <Link
+                  href="/pricing"
+                  onClick={() => setIsOpen(false)}
+                  className="mb-1 flex w-full items-center gap-2 rounded-md px-4 py-2.5 text-sm text-amber-500 transition-colors hover:bg-amber-500/10"
+                >
+                  <Star className="h-4 w-4 fill-amber-500" />
+                  Premium Member
+                </Link>
+              )}
+
               <button
                 onClick={() => {
                   setIsOpen(false);
