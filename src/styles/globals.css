@@ -412,8 +412,27 @@ body {
   display: flex;
   gap: 0.75rem;
   overflow-x: auto;
+  overflow-y: hidden;
   padding-bottom: 0.5rem;
   min-height: 120px;
+}
+
+/* Placing animation for optimistic update */
+@keyframes placing-pulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+.day-cell-chore.placing {
+  animation: placing-pulse 0.8s ease-in-out infinite;
+  border-color: var(--accent-amber);
+  box-shadow: 0 0 8px var(--accent-amber-soft);
 }
 
 /* =============================================================================

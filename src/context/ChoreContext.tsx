@@ -38,27 +38,19 @@ interface ChoreStore {
 
 const ChoreContext = createContext<ChoreStore | null>(null);
 
-// ============ Helpers ============
-
 const generateId = () => Math.random().toString(36).substring(2, 11);
-
-// ============ Provider ============
 
 export function ChoreProvider({ children }: { children: ReactNode }) {
   const { data: session, status } = useSession();
   const isAuthenticated = !!session?.user;
   const isLoading = status === "loading";
 
-  // State
   const [chores, setChores] = useState<Chore[]>([]);
   const [calendarData, setCalendarData] = useState<CalendarData>({});
   const [targetScore, setTargetScoreState] = useState(10);
   const [hasFetched, setHasFetched] = useState(false);
 
-  // Debounce ref for targetScore
   const targetScoreTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  // -------- Data Fetching --------
 
   useEffect(() => {
     if (!isAuthenticated || hasFetched || isLoading) return;
@@ -126,7 +118,6 @@ export function ChoreProvider({ children }: { children: ReactNode }) {
   }, []);
 
   // -------- Chore Operations --------
-
   const createChore = useCallback(
     async (
       name: string,
@@ -220,37 +211,53 @@ export function ChoreProvider({ children }: { children: ReactNode }) {
       const chore = chores.find((c) => c.id === choreId);
       if (!chore) return;
 
-      // Local-only mode
-      if (!isAuthenticated) {
-        const instance: ChoreInstance = {
-          id: generateId(),
-          choreId: chore.id,
-          chore: { ...chore },
-        };
-        setCalendarData((prev) => ({
-          ...prev,
-          [date]: [...(prev[date] ?? []), instance],
-        }));
-        if (!chore.isFavorite) {
-          setChores((prev) => prev.filter((c) => c.id !== choreId));
-        }
-        return;
+      // Create temporary instance for optimistic update
+      const tempId = `placing-${generateId()}`;
+      const placingInstance: ChoreInstance = {
+        id: tempId,
+        choreId: chore.id,
+        chore: { ...chore },
+      };
+
+      // Optimistically add to calendar immediately
+      setCalendarData((prev) => ({
+        ...prev,
+        [date]: [...(prev[date] ?? []), placingInstance],
+      }));
+
+      // Remove from pool if not favorite (optimistic)
+      if (!chore.isFavorite) {
+        setChores((prev) => prev.filter((c) => c.id !== choreId));
       }
+
+      // Local-only mode - we're done
+      if (!isAuthenticated) return;
 
       try {
         const instance = await api.addToCalendarAPI(chore, date);
+        // Replace temp instance with real one
         setCalendarData((prev) => ({
           ...prev,
-          [date]: [...(prev[date] ?? []), instance],
+          [date]: (prev[date] ?? []).map((i) =>
+            i.id === tempId ? instance : i,
+          ),
         }));
         if (!chore.isFavorite) {
-          await deleteChore(choreId);
+          await api.deleteChoreAPI(choreId);
         }
       } catch (error) {
+        // Revert optimistic updates on error
+        setCalendarData((prev) => ({
+          ...prev,
+          [date]: (prev[date] ?? []).filter((i) => i.id !== tempId),
+        }));
+        if (!chore.isFavorite) {
+          setChores((prev) => [...prev, chore]);
+        }
         console.error("Failed to place chore:", error);
       }
     },
-    [chores, isAuthenticated, deleteChore],
+    [chores, isAuthenticated],
   );
 
   const removeFromCalendar = useCallback(
@@ -272,8 +279,6 @@ export function ChoreProvider({ children }: { children: ReactNode }) {
     [isAuthenticated],
   );
 
-  // -------- Computed Values --------
-
   const getDayScore = useCallback(
     (date: string): number => {
       const dayChores = calendarData[date] ?? [];
@@ -286,8 +291,6 @@ export function ChoreProvider({ children }: { children: ReactNode }) {
     (date: string): boolean => getDayScore(date) >= targetScore,
     [getDayScore, targetScore],
   );
-
-  // -------- Context Value --------
 
   return (
     <ChoreContext.Provider

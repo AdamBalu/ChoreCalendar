@@ -31,7 +31,7 @@ export function DayCell({ date, isCurrentMonth, isToday }: DayCellProps) {
   });
 
   const handleRemoveChore = (instanceId: string) => {
-    removeFromCalendar(dateKey, instanceId);
+    void removeFromCalendar(dateKey, instanceId);
   };
 
   return (
@@ -49,25 +49,32 @@ export function DayCell({ date, isCurrentMonth, isToday }: DayCellProps) {
       </div>
 
       <div className="day-cell-chores">
-        {dayChores.map((instance: ChoreInstance) => (
-          <div
-            key={instance.id}
-            className="day-cell-chore group"
-            onClick={() => handleRemoveChore(instance.id)}
-            title={`${instance.chore.name} (+${instance.chore.score}) - click to remove`}
-          >
-            {instance.chore.iconType === "emoji" ? (
-              <span className="text-sm">{instance.chore.icon}</span>
-            ) : (
-              <img
-                src={instance.chore.icon}
-                alt={instance.chore.name}
-                className="h-4 w-4 object-contain"
-              />
-            )}
-            <div className="day-cell-chore-remove">×</div>
-          </div>
-        ))}
+        {dayChores.map((instance: ChoreInstance) => {
+          const isPlacing = instance.id.startsWith("placing-");
+          return (
+            <div
+              key={instance.id}
+              className={`day-cell-chore group ${isPlacing ? "placing" : ""}`}
+              onClick={() => !isPlacing && handleRemoveChore(instance.id)}
+              title={
+                isPlacing
+                  ? "Saving..."
+                  : `${instance.chore.name} (+${instance.chore.score}) - click to remove`
+              }
+            >
+              {instance.chore.iconType === "emoji" ? (
+                <span className="text-sm">{instance.chore.icon}</span>
+              ) : (
+                <img
+                  src={instance.chore.icon}
+                  alt={instance.chore.name}
+                  className="h-4 w-4 object-contain"
+                />
+              )}
+              {!isPlacing && <div className="day-cell-chore-remove">×</div>}
+            </div>
+          );
+        })}
       </div>
 
       {dayChores.length > 0 && (
