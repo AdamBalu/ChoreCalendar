@@ -67,7 +67,14 @@ function ChoreCalendarApp() {
         <header className="app-header">
           <div className="flex-1">
             <div className="app-title-container">
-              <h1>Chore Calendar</h1>
+              <div className="flex flex-row items-center gap-4">
+                <img
+                  src="chore-calendar-logo.png"
+                  alt="Chore Calendar Logo"
+                  className="h-7 w-7 sm:h-9 sm:w-9"
+                />
+                <h1>Chore Calendar</h1>
+              </div>
               <p className="app-description">
                 Create chores, drag them to days, and track your daily progress!
               </p>
