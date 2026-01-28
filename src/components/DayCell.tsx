@@ -63,12 +63,14 @@ export function DayCell({ date, isCurrentMonth, isToday }: DayCellProps) {
               }
             >
               {instance.chore.iconType === "emoji" ? (
-                <span className="text-sm">{instance.chore.icon}</span>
+                <span className="text-lg sm:text-base">
+                  {instance.chore.icon}
+                </span>
               ) : (
                 <img
                   src={instance.chore.icon}
                   alt={instance.chore.name}
-                  className="h-4 w-4 object-contain"
+                  className="h-5 w-5 object-contain sm:h-4 sm:w-4"
                 />
               )}
               {!isPlacing && <div className="day-cell-chore-remove">×</div>}

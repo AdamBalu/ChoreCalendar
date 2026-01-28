@@ -799,7 +799,56 @@ body {
   overflow-y: hidden;
   padding-bottom: 0.5rem;
   min-height: 120px;
-  padding-left: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
+  scroll-behavior: smooth;
+}
+
+.chore-pool-items::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome/Safari */
+}
+
+.chore-pool-relative-container {
+  position: relative;
+  margin: 0 -1rem;
+  padding: 0 1rem;
+}
+
+.chore-pool-scroll-btn {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-fast);
+  backdrop-filter: blur(4px);
+}
+
+.chore-pool-scroll-btn:hover {
+  background: var(--bg-surface);
+  border-color: var(--accent-amber);
+  color: var(--accent-amber);
+  box-shadow: var(--shadow-glow-sm);
+}
+
+.chore-pool-scroll-btn.left {
+  left: 0.5rem;
+}
+
+.chore-pool-scroll-btn.right {
+  right: 0.5rem;
 }
 
 /* Placing animation for optimistic update */
@@ -1266,13 +1315,20 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   background: var(--bg-elevated);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all var(--transition-fast);
+}
+
+@media (max-width: 640px) {
+  .day-cell-chore {
+    width: 36px;
+    height: 36px;
+  }
 }
 
 .day-cell-chore:hover {
@@ -1284,18 +1340,20 @@ body {
   position: absolute;
   top: -6px;
   right: -6px;
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--accent-rose);
   color: white;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: bold;
   border-radius: var(--radius-full);
   opacity: 0;
   transition: opacity var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+  z-index: 10;
 }
 
 .day-cell-chore:hover .day-cell-chore-remove {
@@ -1492,7 +1550,7 @@ body {
   .day-cell-header {
     flex-shrink: 0;
     margin-bottom: 0;
-    min-width: 80px;
+    min-width: 20px;
     flex-direction: column;
     align-items: flex-start;
     gap: 0.25rem;
@@ -1509,10 +1567,6 @@ body {
     gap: 0.375rem;
   }
 
-  .day-cell-chore {
-    width: 24px;
-    height: 24px;
-  }
 
   .day-cell-progress {
     display: none;
