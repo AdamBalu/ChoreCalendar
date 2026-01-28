@@ -61,7 +61,7 @@ export function AuthButton() {
                 <Link
                   href="/pricing"
                   onClick={() => setIsOpen(false)}
-                  className="mb-1 flex w-full items-center gap-2 rounded-md px-4 py-2.5 text-sm text-amber-500 transition-colors hover:bg-amber-500/10"
+                  className="mb-1 flex w-full items-center gap-2 rounded-md py-2.5 pl-4 text-sm text-amber-500 transition-colors hover:bg-amber-500/10"
                 >
                   <Star className="h-4 w-4 fill-amber-500" />
                   Premium Member

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Check, Sparkles, Image, ArrowLeft, Loader2 } from "lucide-react";
 import { usePremiumStatus } from "@/hooks/usePremiumStatus";
 
@@ -11,6 +12,7 @@ export default function PricingPage() {
   const router = useRouter();
   const { isPremium, isLoading } = usePremiumStatus();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isCancelling, setIsCancelling] = useState(false);
 
   const handleUpgrade = async () => {
     if (!session) {
@@ -37,6 +39,26 @@ export default function PricingPage() {
     }
   };
 
+  const handleManageSubscription = async () => {
+    setIsCancelling(true);
+    try {
+      const response = await fetch("/api/stripe/portal", {
+        method: "POST",
+      });
+
+      if (response.ok) {
+        const data = (await response.json()) as { url: string };
+        window.location.href = data.url;
+      } else {
+        console.error("Failed to open subscription management");
+        setIsCancelling(false);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setIsCancelling(false);
+    }
+  };
+
   return (
     <div className="pricing-page">
       <button className="pricing-back-btn" onClick={() => router.push("/")}>
@@ -60,7 +82,7 @@ export default function PricingPage() {
             <div className="pricing-card-header">
               <h2>Free</h2>
               <div className="pricing-price">
-                <span className="pricing-amount">$0</span>
+                <span className="pricing-amount">0€</span>
                 <span className="pricing-period">/month</span>
               </div>
             </div>
@@ -86,9 +108,11 @@ export default function PricingPage() {
                 <span>Cloud sync</span>
               </li>
             </ul>
-            <button className="pricing-btn current" disabled>
-              Current Plan
-            </button>
+            {!isPremium && (
+              <button className="pricing-btn current" disabled>
+                Current Plan
+              </button>
+            )}
           </div>
 
           {/* Premium Tier */}
@@ -100,7 +124,7 @@ export default function PricingPage() {
             <div className="pricing-card-header">
               <h2>Premium</h2>
               <div className="pricing-price">
-                <span className="pricing-amount">$2</span>
+                <span className="pricing-amount">2€</span>
                 <span className="pricing-period">/month</span>
               </div>
             </div>
@@ -145,6 +169,24 @@ export default function PricingPage() {
           </div>
         </div>
       )}
+
+      {/* Cancel subscription link for premium users */}
+      {isPremium && !isLoading && (
+        <button
+          onClick={handleManageSubscription}
+          disabled={isCancelling}
+          className="pricing-cancel-link"
+        >
+          {isCancelling ? "Opening..." : "Manage subscription"}
+        </button>
+      )}
+
+      {/* Footer with legal links */}
+      <div className="pricing-footer">
+        <Link href="/terms">Terms of Service</Link>
+        <span>·</span>
+        <Link href="/privacy">Privacy Policy</Link>
+      </div>
     </div>
   );
 }
