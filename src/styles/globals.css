@@ -540,7 +540,7 @@ body {
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--transition-fast);
-  z-index: 10;
+  z-index: 50;
 }
 
 .chore-card:hover .chore-card-label {
@@ -671,6 +671,7 @@ body {
 
 .calendar-settings {
   position: relative;
+  width: fit-content;
 }
 
 .calendar-settings-btn {
@@ -695,16 +696,40 @@ body {
 .calendar-settings-dropdown {
   position: absolute;
   top: calc(100% + 8px);
-  right: 0;
+  left: 50%;
+  transform: translateX(-50%);
   background: var(--bg-elevated);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-md);
   padding: 1rem;
-  min-width: 200px;
-  z-index: 50;
+  min-width: 240px;
+  z-index: 100;
   box-shadow: var(--shadow-lg);
-  animation: fadeIn 0.2s ease;
+  animation: dropdownFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+
+@media (min-width: 768px) {
+  .calendar-settings-dropdown {
+    left: auto;
+    right: 0;
+    transform: none;
+    min-width: 200px;
+    --dropdown-x: translateX(0);
+  }
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) var(--dropdown-x, translateX(-50%));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) var(--dropdown-x, translateX(-50%));
+  }
+}
+
 
 .calendar-settings-dropdown label {
   display: block;

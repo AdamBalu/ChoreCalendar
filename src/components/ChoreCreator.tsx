@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Plus, Minus, Upload, Sparkles } from "lucide-react";
+import { Plus, Minus, Upload, CalendarPlus } from "lucide-react";
 import { EmojiPicker } from "./EmojiPicker";
 import { useChores } from "@/context/ChoreContext";
 
@@ -26,11 +26,11 @@ export function ChoreCreator() {
     }
   };
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
     if (!name.trim() || !icon) return;
 
     setIsCreating(true);
-    createChore(name.trim(), icon, iconType, score);
+    await createChore(name.trim(), icon, iconType, score);
 
     // Reset form with animation delay
     setTimeout(() => {
@@ -121,7 +121,7 @@ export function ChoreCreator() {
           onClick={handleCreate}
           disabled={!name.trim() || !icon || isCreating}
         >
-          <Sparkles size={18} />
+          <CalendarPlus size={18} />
           <span>Create</span>
         </button>
       </div>
