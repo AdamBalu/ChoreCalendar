@@ -10,11 +10,13 @@ import {
   type DragStartEvent,
 } from "@dnd-kit/core";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 import { ChoreProvider, useChores } from "@/context/ChoreContext";
 import { ChoreCreator } from "@/components/ChoreCreator";
 import { ChorePool } from "@/components/ChorePool";
 import { Calendar } from "@/components/Calendar";
 import { AuthButton } from "@/components/AuthButton";
+import { LandingScreen } from "@/components/LandingScreen";
 import type { Chore } from "@/types";
 
 function ChoreCalendarApp() {
@@ -108,6 +110,24 @@ function ChoreCalendarApp() {
 }
 
 export default function HomePage() {
+  const { status } = useSession();
+
+  // Show landing screen for unauthenticated users
+  if (status === "unauthenticated") {
+    return <LandingScreen />;
+  }
+
+  // Show loading state briefly
+  if (status === "loading") {
+    return (
+      <div className="landing-page">
+        <div className="landing-content">
+          <div className="landing-logo-placeholder" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <ChoreProvider>
       <ChoreCalendarApp />

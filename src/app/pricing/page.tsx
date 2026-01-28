@@ -170,7 +170,7 @@ export default function PricingPage() {
         </div>
       )}
 
-      {/* Cancel subscription link for premium users (not for admins who get it for free) */}
+      {/* Cancel subscription link for premium users */}
       {isPremium && !isAdmin && !isLoading && (
         <button
           onClick={handleManageSubscription}
