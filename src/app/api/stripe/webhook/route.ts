@@ -8,9 +8,8 @@ import { users } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import { env } from "@/env";
 
-const stripe = new Stripe(env.STRIPE_SECRET_KEY ?? "");
-
 export async function POST(request: NextRequest) {
+  const stripe = new Stripe(env.STRIPE_SECRET_KEY ?? "");
   try {
     const body = await request.text();
     const signature = request.headers.get("stripe-signature");
